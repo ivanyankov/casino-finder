@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CasinoFinder;
 
 use CasinoFinder\PostTypes\PostType;
+use CasinoFinder\Taxonomies\Taxonomy;
 use CasinoFinder\MetaBoxes\CasinoMetaBoxes;
 
 /**
@@ -60,6 +61,7 @@ final class Plugin
         $this->booted = true;
 
         $this->registerPostTypes();
+        $this->registerTaxonomies();
         $this->registerMetaBoxes();
     }
 
@@ -86,5 +88,19 @@ final class Plugin
             'has_archive'  => false,
             'show_in_rest' => true,
         ]))->register();
+    }
+
+    private function registerTaxonomies(): void
+    {
+        $taxonomies = [
+            ['casino_type',         __('Casino Type', 'casino-finder'),    __('Casino Types', 'casino-finder')],
+            ['casino_game',         __('Game', 'casino-finder'),           __('Games', 'casino-finder')],
+            ['casino_banking',      __('Banking Method', 'casino-finder'), __('Banking Methods', 'casino-finder')],
+            ['casino_payout_speed', __('Payout Speed', 'casino-finder'),   __('Payout Speeds', 'casino-finder')],
+        ];
+
+        foreach ($taxonomies as [$slug, $singular, $plural]) {
+            (new Taxonomy($slug, $singular, $plural, 'casino'))->register();
+        }
     }
 }
