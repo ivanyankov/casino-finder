@@ -1,0 +1,14 @@
+{
+    "name": "casino-finder/casino-finder",
+    "description": "A WordPress plugin that recommends online casinos based on user preferences through a step-by-step wizard.",
+    "type": "wordpress-plugin",
+    "license": "GPL-2.0-or-later",
+    "require": {
+        "php": ">=7.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "CasinoFinder\\": "src/"
+        }
+    }
+}
