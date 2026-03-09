@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace CasinoFinder;
 
+use CasinoFinder\PostTypes\PostType;
+
 /**
  * Main plugin bootstrap class.
  *
@@ -55,5 +57,22 @@ final class Plugin
         }
 
         $this->booted = true;
+
+        $this->registerPostTypes();
+    }
+
+    /**
+     * Register all custom post types.
+     *
+     * @return void
+     */
+    private function registerPostTypes(): void
+    {
+        (new PostType('casino', 'Casino', 'Casinos', [
+            'menu_icon'    => 'dashicons-money-alt',
+            'supports'     => ['title', 'editor', 'thumbnail', 'excerpt', 'revisions'],
+            'has_archive'  => false,
+            'show_in_rest' => true,
+        ]))->register();
     }
 }
