@@ -4,8 +4,48 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "aa499e7decd18ddc18b189bcdc2ea59a",
-    "packages": [],
+    "content-hash": "a2691cbdd67b4b647dc6b25ea44fed79",
+    "packages": [
+        {
+            "name": "ivanyankov/meta-fields-builder",
+            "version": "v1.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ivanyankov/meta-fields-builder.git",
+                "reference": "b7f1d5d2cf553b3fd044c6a5f5d3f79fdb56b696"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ivanyankov/meta-fields-builder/zipball/b7f1d5d2cf553b3fd044c6a5f5d3f79fdb56b696",
+                "reference": "b7f1d5d2cf553b3fd044c6a5f5d3f79fdb56b696",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Yankov\\MetaFieldsBuilder\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Ivan Yankov"
+                }
+            ],
+            "description": "A robust, flexible, and easy-to-use PHP library to quickly create, register, and reuse meta fields and meta boxes configurations, and keep them in your source code repository.",
+            "support": {
+                "issues": "https://github.com/ivanyankov/meta-fields-builder/issues",
+                "source": "https://github.com/ivanyankov/meta-fields-builder/tree/v1.2.1"
+            },
+            "time": "2026-03-09T11:42:09+00:00"
+        }
+    ],
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
