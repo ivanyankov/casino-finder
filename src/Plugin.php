@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CasinoFinder;
 
 use CasinoFinder\PostTypes\PostType;
+use CasinoFinder\MetaBoxes\CasinoMetaBoxes;
 
 /**
  * Main plugin bootstrap class.
@@ -59,6 +60,17 @@ final class Plugin
         $this->booted = true;
 
         $this->registerPostTypes();
+        $this->registerMetaBoxes();
+    }
+
+    /**
+     * Register all meta boxes for custom post types.
+     *
+     * @return void
+     */
+    private function registerMetaBoxes(): void
+    {
+        (new CasinoMetaBoxes())->register();
     }
 
     /**
@@ -68,7 +80,7 @@ final class Plugin
      */
     private function registerPostTypes(): void
     {
-        (new PostType('casino', 'Casino', 'Casinos', [
+        (new PostType('casino', __('Casino', 'casino-finder'), __('Casinos', 'casino-finder'), [
             'menu_icon'    => 'dashicons-money-alt',
             'supports'     => ['title', 'editor', 'thumbnail', 'excerpt', 'revisions'],
             'has_archive'  => false,
