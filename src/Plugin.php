@@ -6,6 +6,7 @@ namespace CasinoFinder;
 
 use CasinoFinder\PostTypes\PostType;
 use CasinoFinder\Taxonomies\Taxonomy;
+use Yankov\MetaFieldsBuilder\Fields\TaxonomyImageField;
 use CasinoFinder\MetaBoxes\CasinoMetaBoxes;
 
 /**
@@ -101,6 +102,7 @@ final class Plugin
 
         foreach ($taxonomies as [$slug, $singular, $plural]) {
             (new Taxonomy($slug, $singular, $plural, 'casino'))->register();
+            (new TaxonomyImageField($slug))->register();
         }
     }
 }
