@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "ivanyankov/meta-fields-builder",
-            "version": "v1.2.1",
+            "version": "v1.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ivanyankov/meta-fields-builder.git",
-                "reference": "b7f1d5d2cf553b3fd044c6a5f5d3f79fdb56b696"
+                "reference": "1f65e3668983d6064e63041f62c5c18a40ef844a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ivanyankov/meta-fields-builder/zipball/b7f1d5d2cf553b3fd044c6a5f5d3f79fdb56b696",
-                "reference": "b7f1d5d2cf553b3fd044c6a5f5d3f79fdb56b696",
+                "url": "https://api.github.com/repos/ivanyankov/meta-fields-builder/zipball/1f65e3668983d6064e63041f62c5c18a40ef844a",
+                "reference": "1f65e3668983d6064e63041f62c5c18a40ef844a",
                 "shasum": ""
             },
             "require": {
@@ -41,9 +41,9 @@
             "description": "A robust, flexible, and easy-to-use PHP library to quickly create, register, and reuse meta fields and meta boxes configurations, and keep them in your source code repository.",
             "support": {
                 "issues": "https://github.com/ivanyankov/meta-fields-builder/issues",
-                "source": "https://github.com/ivanyankov/meta-fields-builder/tree/v1.2.1"
+                "source": "https://github.com/ivanyankov/meta-fields-builder/tree/v1.2.2"
             },
-            "time": "2026-03-09T11:42:09+00:00"
+            "time": "2026-03-09T12:50:46+00:00"
         }
     ],
     "packages-dev": [],
