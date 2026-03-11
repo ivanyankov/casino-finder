@@ -101,7 +101,6 @@ const elementSelectors = {
         }
       })
   
-      // Event delegation for all option buttons
       elements.wizard.addEventListener('click', (event) => {
         const button = event.target.closest('.casino-finder-option')
         if (!button || !elements.wizard.contains(button)) return
@@ -109,6 +108,26 @@ const elementSelectors = {
       })
   
       updateProgressBar()
+
+      if (elements.results) {
+        elements.results.addEventListener('click', (event) => {
+          const button = event.target.closest('.casino-finder-card__code-copy')
+          if (!button || !elements.results.contains(button)) return
+
+          const codeWrapper = button.closest('.casino-finder-card__code')
+          if (!codeWrapper) return
+
+          const codeElement = codeWrapper.querySelector('.casino-finder-card__code-text')
+          if (!codeElement || !codeElement.textContent) return
+
+          const code = codeElement.textContent.trim()
+          if (!code) return
+
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(code).catch(() => {})
+          }
+        })
+      }
       if (elements.startOver) elements.startOver.addEventListener('click', resetWizard)
       if (isLoadMoreEnabled && elements.loadMore) {
         elements.loadMore.addEventListener('click', () => {
@@ -120,9 +139,20 @@ const elementSelectors = {
     }
   
     const updateProgressBar = () => {
+      const isResultsView = currentStep >= stepElements.length
+
       progressStepElements.forEach((stepElement, index) => {
         stepElement.classList.remove('is-active', 'is-completed')
-  
+
+        const labelElement = $('.casino-finder-progress__label', stepElement)
+
+        if (isResultsView) {
+          stepElement.classList.add('is-completed')
+          const originalLabel = stepElement.getAttribute('data-original-label')
+          if (originalLabel && labelElement) labelElement.textContent = originalLabel
+          return
+        }
+
         if (index < currentStep) {
           stepElement.classList.add('is-completed')
           const stepElementDom = stepElements[index]
@@ -134,7 +164,6 @@ const elementSelectors = {
               stepElementDom,
             )
             const optionLabel = optionButton ? $('.casino-finder-option__label', optionButton) : null
-            const labelElement = $('.casino-finder-progress__label', stepElement)
             if (labelElement && optionLabel) {
               if (!stepElement.getAttribute('data-original-label')) {
                 stepElement.setAttribute('data-original-label', labelElement.textContent || '')
@@ -142,7 +171,9 @@ const elementSelectors = {
               labelElement.textContent = optionLabel.textContent || ''
             }
           }
-        } else if (index === currentStep) stepElement.classList.add('is-active')
+        } else if (index === currentStep) {
+          stepElement.classList.add('is-active')
+        }
       })
     }
   
