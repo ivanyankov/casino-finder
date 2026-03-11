@@ -35,11 +35,6 @@ class Taxonomy
 
     public function register(): void
     {
-        add_action('init', [$this, 'registerTaxonomy']);
-    }
-
-    public function registerTaxonomy(): void
-    {
         register_taxonomy($this->slug, $this->postType, array_merge($this->defaults(), $this->args));
     }
 
