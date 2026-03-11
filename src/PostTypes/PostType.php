@@ -40,14 +40,9 @@ class PostType
         $this->args     = $args;
     }
 
-    /**
-     * Hook into WordPress to register the post type.
-     *
-     * @return void
-     */
     public function register(): void
     {
-        add_action('init', [$this, 'registerPostType']);
+        $this->registerPostType();
     }
 
     /**

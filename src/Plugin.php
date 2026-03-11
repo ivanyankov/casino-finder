@@ -8,6 +8,8 @@ use CasinoFinder\PostTypes\PostType;
 use CasinoFinder\Taxonomies\Taxonomy;
 use Yankov\MetaFieldsBuilder\Fields\TaxonomyImageField;
 use CasinoFinder\MetaBoxes\CasinoMetaBoxes;
+use CasinoFinder\Shortcodes\CasinoFinderShortcode;
+use CasinoFinder\Rest\CasinoFinderController;
 
 /**
  * Main plugin bootstrap class.
@@ -61,9 +63,14 @@ final class Plugin
 
         $this->booted = true;
 
-        $this->registerPostTypes();
-        $this->registerTaxonomies();
-        $this->registerMetaBoxes();
+        add_action('init', function (): void {
+            $this->registerPostTypes();
+            $this->registerTaxonomies();
+            $this->registerMetaBoxes();
+            $this->registerShortcodes();
+        });
+
+        $this->registerRestRoutes();
     }
 
     /**
@@ -91,6 +98,14 @@ final class Plugin
         ]))->register();
     }
 
+    /**
+     * Register all taxonomies used by the Casino post type.
+     *
+     * Each taxonomy also receives an image field so terms can have icons
+     * displayed in the finder wizard.
+     *
+     * @return void
+     */
     private function registerTaxonomies(): void
     {
         $taxonomies = [
@@ -104,5 +119,25 @@ final class Plugin
             (new Taxonomy($slug, $singular, $plural, 'casino'))->register();
             (new TaxonomyImageField($slug))->register();
         }
+    }
+
+    /**
+     * Register all public-facing shortcodes.
+     *
+     * @return void
+     */
+    private function registerShortcodes(): void
+    {
+        (new CasinoFinderShortcode())->register();
+    }
+
+    /**
+     * Register REST API routes used by the finder.
+     *
+     * @return void
+     */
+    private function registerRestRoutes(): void
+    {
+        (new CasinoFinderController())->register();
     }
 }
