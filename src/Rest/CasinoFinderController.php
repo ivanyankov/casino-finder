@@ -108,6 +108,7 @@ final class CasinoFinderController
         $page     = max(1, (int) $request->get_param('page'));
         $perPage  = (int) $request->get_param('per_page') ?: 10;
         $perPage  = max(1, min(50, $perPage));
+
         $query = new \WP_Query([
             'post_type'              => 'casino',
             'posts_per_page'         => $perPage,
@@ -117,7 +118,7 @@ final class CasinoFinderController
             'orderby'                => 'meta_value_num',
             'order'                  => 'DESC',
             'fields'                 => 'ids',
-            'no_found_rows'          => true,
+            'no_found_rows'          => false,
             'update_post_meta_cache' => true,
             'update_post_term_cache' => true,
             'paged'                  => $page,
@@ -131,16 +132,18 @@ final class CasinoFinderController
             ], 200);
         }
 
-        $html = '';
+        $html          = '';
+        $totalMatches  = (int) $query->found_posts;
 
         foreach ($query->posts as $postId) {
             $html .= $this->renderCasinoCard((int) $postId);
         }
 
         return new WP_REST_Response([
-            'html'     => $html,
-            'page'     => $page,
-            'has_more' => count($query->posts) === $perPage,
+            'html'           => $html,
+            'page'           => $page,
+            'total_matches'  => $totalMatches,
+            'has_more'       => ($page * $perPage) < $totalMatches,
         ], 200);
     }
 

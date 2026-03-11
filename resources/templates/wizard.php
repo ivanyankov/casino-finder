@@ -43,6 +43,19 @@
         </button>
     </div>
 
+    <div class="casino-finder-wizard__summary is-hidden" id="casino-finder-summary">
+        <div class="casino-finder-summary__text">
+            <p class="casino-finder-summary__headline" id="casino-finder-summary-headline"></p>
+            <p class="casino-finder-summary__subline" id="casino-finder-summary-subline"></p>
+        </div>
+        <div class="casino-finder-summary__tags">
+            <p class="casino-finder-summary__tags-label">
+                <?php esc_html_e('This casino is best for:', 'casino-finder'); ?>
+            </p>
+            <div class="casino-finder-summary__tags-list" id="casino-finder-summary-tags"></div>
+        </div>
+    </div>
+
     <div class="casino-finder-wizard__back-wrap is-hidden" id="casino-finder-back-wrap"></div>
 
     <div class="casino-finder-wizard__body" id="casino-finder-body">

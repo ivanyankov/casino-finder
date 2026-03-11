@@ -68,13 +68,17 @@ final class CasinoFinderShortcode
         $loadMoreRaw     = strtolower((string) $atts['load_more']);
         $enableLoadMore  = in_array($loadMoreRaw, ['1', 'true', 'yes'], true);
 
+        $postCounts   = wp_count_posts('casino');
+        $totalCasinos = $postCounts instanceof \stdClass ? (int) ($postCounts->publish ?? 0) : 0;
+
         wp_enqueue_style(self::STYLE_HANDLE);
         wp_enqueue_script(self::SCRIPT_HANDLE);
 
         wp_localize_script(self::SCRIPT_HANDLE, 'casinoFinderWizard', [
-            'restUrl' => rest_url('casino-finder/v1/search'),
-            'nonce'   => wp_create_nonce('wp_rest'),
-            'perPage' => $perPage,
+            'restUrl'      => rest_url('casino-finder/v1/search'),
+            'nonce'        => wp_create_nonce('wp_rest'),
+            'perPage'      => $perPage,
+            'totalCasinos' => $totalCasinos,
             'enableLoadMore' => $enableLoadMore,
             'i18n'    => [
                 'startOver'    => __('Start Over', 'casino-finder'),
@@ -95,6 +99,8 @@ final class CasinoFinderShortcode
                 'rating'       => __('Rating', 'casino-finder'),
                 'playAt'       => __('Play at', 'casino-finder'),
                 'loadMore'     => __('Load more results', 'casino-finder'),
+                'summaryTemplate' => __('Out of %total% casinos researched, %matched% align with your preferences.', 'casino-finder'),
+                'summarySubline'  => __('Based on what you selected.', 'casino-finder'),
             ],
         ]);
 

@@ -2,6 +2,10 @@ const elementSelectors = {
     wizard: '#casino-finder-wizard',
     progress: '#casino-finder-progress',
     toolbar: '#casino-finder-toolbar',
+    summary: '#casino-finder-summary',
+    summaryHeadline: '#casino-finder-summary-headline',
+    summarySubline: '#casino-finder-summary-subline',
+    summaryTags: '#casino-finder-summary-tags',
     backWrap: '#casino-finder-back-wrap',
     body: '#casino-finder-body',
     results: '#casino-finder-results',
@@ -20,6 +24,7 @@ const elementSelectors = {
     const translations = config.i18n || {}
     const resultsPerPage = config.perPage || 10
     const isLoadMoreEnabled = Boolean(config.enableLoadMore)
+    const totalCasinos = Number(config.totalCasinos || 0)
   
     const elements = Object.fromEntries(
       Object.entries(elementSelectors).map(([key, selector]) => [key, $(selector)]),
@@ -31,6 +36,7 @@ const elementSelectors = {
     let currentStep = 0
     let currentPage = 1
     let hasMorePages = false
+    let totalMatches = 0
   
     const stepElements = $('.casino-finder-step', document, true)
     const progressStepElements = elements.progress
@@ -49,9 +55,14 @@ const elementSelectors = {
       selections = {}
       currentStep = 0
       currentPage = 1
+      totalMatches = 0
   
       addClass(elements.results, 'is-hidden')
       addClass(elements.loadMoreWrap, 'is-hidden')
+      addClass(elements.summary, 'is-hidden')
+      if (elements.summaryHeadline) elements.summaryHeadline.textContent = ''
+      if (elements.summarySubline) elements.summarySubline.textContent = ''
+      if (elements.summaryTags) elements.summaryTags.innerHTML = ''
       removeClass(elements.body, 'is-hidden')
   
       stepElements.forEach((stepElement, index) => {
@@ -151,6 +162,60 @@ const elementSelectors = {
       fetchResults(false)
     }
   
+    const buildBestForTags = () => {
+      const tags = []
+
+      stepElements.forEach((stepElement) => {
+        const stepKey = stepElement.dataset.stepKey
+        if (!stepKey) return
+        const selectedSlug = selections[stepKey]
+        if (!selectedSlug) return
+
+        const optionButton = $(
+          `.casino-finder-option[data-value="${selectedSlug}"]`,
+          stepElement,
+        )
+        const optionLabel = optionButton ? $('.casino-finder-option__label', optionButton) : null
+        if (optionLabel && optionLabel.textContent) {
+          tags.push(optionLabel.textContent.trim())
+        }
+      })
+
+      return tags
+    }
+
+    const updateSummary = () => {
+      if (!elements.summary || !elements.results) return
+      if (!totalMatches || !translations.summaryTemplate) {
+        addClass(elements.summary, 'is-hidden')
+        return
+      }
+
+      if (elements.summaryHeadline) {
+        const template = translations.summaryTemplate
+        elements.summaryHeadline.textContent = template
+          .replace('%total%', String(totalCasinos))
+          .replace('%matched%', String(totalMatches))
+      }
+
+      if (elements.summarySubline) {
+        elements.summarySubline.textContent = translations.summarySubline || ''
+      }
+
+      if (elements.summaryTags) {
+        elements.summaryTags.innerHTML = ''
+        const tagLabels = buildBestForTags()
+        tagLabels.forEach((text) => {
+          const chip = document.createElement('span')
+          chip.className = 'casino-finder-summary__tag'
+          chip.textContent = text
+          elements.summaryTags.appendChild(chip)
+        })
+      }
+
+      removeClass(elements.summary, 'is-hidden')
+    }
+
     const fetchResults = async (isLoadMore) => {
       currentStep = stepElements.length
       updateProgressBar()
@@ -162,9 +227,7 @@ const elementSelectors = {
   
       if (!isLoadMore) {
         currentPage = 1
-        elements.results.innerHTML = `<div class="casino-finder-loading"><p>${
-          translations.loading || ''
-        }</p></div>`
+        elements.results.innerHTML = `<div class="casino-finder-loading"><p>${translations.loading || ''}</p></div>`
       }
   
       try {
@@ -175,7 +238,9 @@ const elementSelectors = {
   
         if (!response.ok) throw new Error(`Request failed with status ${response.status}`)
         const data = await response.json()
+        totalMatches = Number(data.total_matches || 0)
         renderResults(data.html || '', Boolean(isLoadMore))
+        updateSummary()
         hasMorePages = Boolean(data.has_more)
         if (isLoadMoreEnabled && hasMorePages) {
           removeClass(elements.loadMoreWrap, 'is-hidden')
@@ -189,9 +254,7 @@ const elementSelectors = {
   
     const renderResults = (html, append) => {
       if (!html && !append) {
-        elements.results.innerHTML = `<p class="casino-finder-no-results">${
-          translations.noResults || ''
-        }</p>`
+        elements.results.innerHTML = `<p class="casino-finder-no-results">${translations.noResults || ''}</p>`
         return
       }
       elements.results.innerHTML = append ? elements.results.innerHTML + html : html

@@ -114,6 +114,55 @@
      outline: none;
  }
 
+.casino-finder-wizard__summary {
+    margin-bottom: 24px;
+    padding: 24px 20px;
+    background: #f3f4f6;
+    display: flex;
+    justify-content: space-between;
+    gap: 32px;
+    font-size: 14px;
+    border-radius: 4px;
+}
+
+.casino-finder-summary__headline {
+    font-weight: 700;
+    margin: 0 0 4px;
+    color: #111827;
+}
+
+.casino-finder-summary__subline {
+    margin: 0;
+    color: #4b5563;
+}
+
+.casino-finder-summary__tags {
+    text-align: right;
+}
+
+.casino-finder-summary__tags-label {
+    margin: 0 0 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #111827;
+}
+
+.casino-finder-summary__tags-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    justify-content: flex-end;
+}
+
+.casino-finder-summary__tag {
+    padding: 4px 10px;
+    border-radius: 4px;
+    background: #fdc724;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 600;
+}
+
  .casino-finder-wizard__load-more {
      text-align: center;
      margin-top: 16px;
@@ -247,6 +296,7 @@
      display: flex;
      flex-direction: column;
      gap: 8px;
+     border: 2px solid rgba(226, 230, 233, 1);
  }
 
  .casino-finder-card__header {
@@ -411,6 +461,20 @@
      .casino-finder-wizard__results {
          grid-template-columns: repeat(1, 1fr);
      }
+
+    .casino-finder-wizard__summary {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .casino-finder-summary__tags {
+        text-align: left;
+        width: 100%;
+    }
+
+    .casino-finder-summary__tags-list {
+        justify-content: flex-start;
+    }
 
      .casino-finder-wizard {
          padding: 20px 16px;
