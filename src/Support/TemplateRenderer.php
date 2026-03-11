@@ -16,23 +16,12 @@ final class TemplateRenderer
      */
     public static function render(string $template, array $context = []): string
     {
-        $basePath = CASINO_FINDER_PLUGIN_DIR . 'resources/templates/';
-        $template = ltrim($template, '/');
-
-        if (pathinfo($template, PATHINFO_EXTENSION) !== 'php') {
-            return '';
-        }
-
-        $base = realpath($basePath);
-        $path = realpath($basePath . $template);
-
-        if ($base === false || $path === false || strpos($path, $base) !== 0 || ! is_readable($path)) {
-            return '';
-        }
+        $path = CASINO_FINDER_PLUGIN_DIR . 'resources/templates/' . ltrim($template, '/');
 
         extract($context, EXTR_SKIP);
 
         ob_start();
+    
         include $path;
 
         return (string) ob_get_clean();
