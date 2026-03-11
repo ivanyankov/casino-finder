@@ -145,8 +145,20 @@
      margin-bottom: 20px;
  }
 
+.is-hidden {
+    display: none !important;
+}
+
 
  /* ── Step content ─────────────────────────────────────────── */
+
+.casino-finder-step {
+    display: none;
+}
+
+.casino-finder-step.casino-finder-step--active {
+    display: block;
+}
 
  .casino-finder-step__question {
      text-align: center;
